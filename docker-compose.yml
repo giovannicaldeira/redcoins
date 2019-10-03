@@ -7,7 +7,7 @@ services:
     environment:
       MYSQL_DATABASE: 'redcoinsdb'
       MYSQL_USER: 'redcoins'
-      MYSQL_PASSWORD: 'red#coins!'
+      MYSQL_PASSWORD: 'redcoins@!'
       MYSQL_ROOT_PASSWORD: 'p@ssw0rd!'
     ports:
       - '3306:3306'

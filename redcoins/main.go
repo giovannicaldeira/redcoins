@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"github.com/giovanni-rc/redcoins/models"
+
+	_ "github.com/giovanni-rc/redcoins/models"
 	"github.com/gorilla/mux"
 )
 

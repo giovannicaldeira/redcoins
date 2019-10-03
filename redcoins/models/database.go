@@ -21,9 +21,11 @@ func init() {
 	username := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASS")
 	dbName := os.Getenv("DB_NAME")
-	dbHost := os.Getenv("DB_HOST")
+	// dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
 
-	dbURI := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password) //Build connection string
+	// dbURI := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password) //Build connection string
+	dbURI := fmt.Sprintf("%s:%s@(localhost:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, dbPort, dbName)
 	fmt.Println(dbURI)
 
 	conn, err := gorm.Open("mysql", dbURI)
@@ -32,7 +34,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&User{}, &Operation{})
+	db.Debug().AutoMigrate(&user{}, &operation{})
 }
 
 func getDB() *gorm.DB {
