@@ -1,15 +1,15 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
-type user struct {
+type User struct {
 	gorm.Model
-	email      string `gorm:"primary_key"`
-	password   string
-	name       string
-	birthDate  time.Time
-	operations []operation `gorm:"ForeignKey:userEmail"`
+	Email    string    `gorm:"unique_index;not null" json:"email"`
+	Password string    `gorm:"not null" json:"password"`
+	Name     string    `gorm:"not null" json:"name"`
+	Birthday time.Time `gorm:"type:timestamp;not null" json:"birthday"`
 }

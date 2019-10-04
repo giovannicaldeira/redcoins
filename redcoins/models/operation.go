@@ -1,14 +1,15 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
-type operation struct {
+type Operation struct {
 	gorm.Model
-	operationID int `gorm:"primary_key"`
-	qty         int
-	date        time.Time
-	userEmail   string
+	Qty    int       `gorm:"not null" json:"qty"`
+	Date   time.Time `gorm:"type:timestamp;not null" json:"date"`
+	Value  float64   `gorm:"not null" json:"value"`
+	UserID uint      `gorm:"not null" json:"user_id"`
 }
