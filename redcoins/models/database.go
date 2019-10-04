@@ -37,6 +37,6 @@ func init() {
 	db.Model(&Operation{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 }
 
-func getDB() *gorm.DB {
+func GetDB() *gorm.DB {
 	return db
 }

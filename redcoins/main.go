@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/giovanni-rc/redcoins/controllers"
 	_ "github.com/giovanni-rc/redcoins/models"
 	"github.com/gorilla/mux"
 )
@@ -14,7 +15,7 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	router := mux.NewRouter().StrictSlash(true)
+	router := mux.NewRouter()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -24,6 +25,8 @@ func main() {
 	fmt.Println(port)
 
 	router.HandleFunc("/", homeLink)
+	router.HandleFunc("/redcoins/api/user/new/", controllers.CreateUser).Methods("POST")
+
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
 		fmt.Println(err)
