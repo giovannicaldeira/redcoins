@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/giovanni-rc/redcoins/controllers"
-	_ "github.com/giovanni-rc/redcoins/models"
+	"redcoins/app"
+	"redcoins/controllers"
+	_ "redcoins/models"
+
 	"github.com/gorilla/mux"
 )
 
@@ -22,11 +24,14 @@ func main() {
 		port = "8000"
 	}
 
-	fmt.Println(port)
+	router.Use(app.JwtAuthentication)
 
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/redcoins/api/user/new/", controllers.CreateUser).Methods("POST")
-	router.HandleFunc("/redcoins/api/login/", controllers.Authenticate).Methods("POST")
+	router.HandleFunc("/redcoins/api/user/new", controllers.CreateUser).Methods("POST")
+	router.HandleFunc("/redcoins/api/login", controllers.Authenticate).Methods("POST")
+	router.HandleFunc("/redcoins/api/operation/new", controllers.CreateOperation).Methods("POST")
+
+	fmt.Println("Server up on port: " + port)
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {

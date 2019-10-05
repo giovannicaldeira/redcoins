@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
+
+	"redcoins/models"
+	u "redcoins/utils"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/giovanni-rc/redcoins/models"
-	u "github.com/giovanni-rc/redcoins/utils"
 )
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		noAuth := []string{"/api/user/new", "api/user/login"}
+		noAuth := []string{"/redcoins/api/user/new", "/redcoins/api/login"}
 		requestPath := r.URL.Path
 
 		for _, value := range noAuth {
@@ -37,16 +37,18 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			return
 		}
 
-		tokenSplitted := strings.Split(tokenHeader, " ")
-		if len(tokenSplitted) != 2 {
-			response = u.Message(false, "Token de autenticação invalido")
-			w.WriteHeader(http.StatusForbidden)
-			w.Header().Add("Content-Type", "application/json")
-			u.Respond(w, response)
-			return
-		}
+		// tokenSplitted := strings.Split(tokenHeader, " ")
+		// if len(tokenSplitted) != 2 {
+		// 	response = u.Message(false, "Token de autenticação invalido")
+		// 	w.WriteHeader(http.StatusForbidden)
+		// 	w.Header().Add("Content-Type", "application/json")
+		// 	u.Respond(w, response)
+		// 	return
+		// }
 
-		tokenPart := tokenSplitted[1]
+		// tokenPart := tokenSplitted[1]
+
+		tokenPart := tokenHeader
 		tk := &models.Token{}
 
 		token, err := jwt.ParseWithClaims(tokenPart, tk, func(token *jwt.Token) (interface{}, error) {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/giovanni-rc/redcoins/models"
-	u "github.com/giovanni-rc/redcoins/utils"
+	"redcoins/models"
+	u "redcoins/utils"
 )
 
 var CreateUser = func(w http.ResponseWriter, r *http.Request) {

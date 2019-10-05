@@ -4,8 +4,9 @@ import (
 	"os"
 	"strings"
 
+	u "redcoins/utils"
+
 	jwt "github.com/dgrijalva/jwt-go"
-	u "github.com/giovanni-rc/redcoins/utils"
 	"github.com/jinzhu/gorm"
 )
 
@@ -31,7 +32,7 @@ func (user *User) Validate() (map[string]interface{}, bool) {
 
 	userTemp := &User{}
 
-	err := GetDB().Table("users").Where("email = ?", user.Email).First(user).Error
+	err := GetDB().Table("users").Where("email = ?", user.Email).First(userTemp).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Erro de conexão. Tente Novamente"), false
 	}
