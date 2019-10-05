@@ -26,6 +26,7 @@ func main() {
 
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/redcoins/api/user/new/", controllers.CreateUser).Methods("POST")
+	router.HandleFunc("/redcoins/api/login/", controllers.Authenticate).Methods("POST")
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
