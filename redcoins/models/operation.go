@@ -60,3 +60,46 @@ func (operation *Operation) Validate() (map[string]interface{}, bool) {
 
 	return u.Message(false, "Request Validado!"), true
 }
+
+func GetOperationByUser(id uint64) (map[string]interface{}, []*Operation) {
+
+	userTemp := &User{}
+
+	err := GetDB().Table("users").Where("id = ?", id).First(userTemp).Error
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return u.Message(false, "Erro de conexão. Tente Novamente"), nil
+	} else if err == gorm.ErrRecordNotFound {
+		return u.Message(false, "Usuario nao encontrado. Tente Novamente"), nil
+	}
+
+	operations := make([]*Operation, 0)
+	err = GetDB().Table("operations").Where("user_id = ?", id).Find(&operations).Error
+	if err != nil {
+		return u.Message(false, "Erro ao processar sua pesquisa. Tente Novamente"), nil
+	}
+
+	response := u.Message(true, "Busca realizada com sucesso")
+	response["operations"] = operations
+
+	return response, operations
+
+}
+
+func GetOperationByDate(date string) (map[string]interface{}, []*Operation) {
+
+	operations := make([]*Operation, 0)
+
+	start := date + " 00:00:00"
+	end := date + " 23:59:59"
+
+	err := GetDB().Table("operations").Where("date BETWEEN ? and ?", start, end).Find(&operations).Error
+	if err != nil {
+		return u.Message(false, "Erro ao processar sua pesquisa. Tente Novamente"), nil
+	}
+
+	response := u.Message(true, "Busca realizada com sucesso")
+	response["operations"] = operations
+
+	return response, operations
+}
