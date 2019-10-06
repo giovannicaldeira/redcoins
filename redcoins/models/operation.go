@@ -23,7 +23,20 @@ func (operation *Operation) Create() map[string]interface{} {
 		return resp
 	}
 
-	operation.Value = operation.Qty * 34500
+	bitcoin := &Bitcoin{}
+
+	err := GetDB().Table("bitcoins").Where("id = ?", 1).First(bitcoin).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil
+	} else if err == gorm.ErrRecordNotFound {
+		bitcoin = bitcoin.GetValueBTC(1)
+	}
+
+	if diff := time.Now().Sub(bitcoin.LastUpdate); diff.Hours() > 1 {
+		bitcoin = bitcoin.GetValueBTC(2)
+	}
+
+	operation.Value = operation.Qty * bitcoin.Value
 
 	GetDB().Create(operation)
 

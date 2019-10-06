@@ -16,7 +16,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		noAuth := []string{"/redcoins/api/user/new", "/redcoins/api/login"}
+		noAuth := []string{"/redcoins/api/user/new", "/redcoins/api/login", "/redcoins/api/user/reset_password"}
 		requestPath := r.URL.Path
 
 		for _, value := range noAuth {

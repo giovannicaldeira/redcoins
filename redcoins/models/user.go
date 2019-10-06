@@ -21,7 +21,7 @@ type User struct {
 	Password string `gorm:"not null" json:"password"`
 	Name     string `gorm:"not null" json:"name"`
 	Birthday string `gorm:"not null" json:"birthday"`
-	Token    string `json:"token";sql:"-"`
+	Token    string `json:"token"; sql:"-"`
 }
 
 func (user *User) Validate() (map[string]interface{}, bool) {
@@ -89,6 +89,27 @@ func Login(email, password string) map[string]interface{} {
 
 	resp := u.Message(true, "Login realizado com sucesso")
 	resp["user"] = user
+	return resp
+}
+
+func RecoverPassword(email string, password string) map[string]interface{} {
+
+	user := &User{}
+	err := GetDB().Table("users").Where("email = ?", email).First(user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return u.Message(false, "Usuario nao encontrado")
+		}
+		return u.Message(false, "Erro de conexao. Tente novamente")
+	}
+
+	user.Password = password
+	GetDB().Save(&user)
+	if err != nil {
+		return u.Message(false, "Erro de conexao. Tente novamente")
+	}
+
+	resp := u.Message(true, "Senha alterada com sucesso")
 	return resp
 }
 

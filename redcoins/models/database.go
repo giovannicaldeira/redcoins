@@ -33,7 +33,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&Operation{}, &User{})
+	db.Debug().AutoMigrate(&Operation{}, &User{}, &Bitcoin{})
 	db.Model(&Operation{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 }
 
