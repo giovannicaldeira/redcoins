@@ -21,10 +21,10 @@ func init() {
 	username := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASS")
 	dbName := os.Getenv("DB_NAME")
-	// dbHost := os.Getenv("DB_HOST")
+	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
-	dbURI := fmt.Sprintf("%s:%s@(localhost:%s)/%s?charset=utf8&parseTime=True", username, password, dbPort, dbName)
+	dbURI := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True", username, password, dbHost, dbPort, dbName)
 	fmt.Println(dbURI)
 
 	conn, err := gorm.Open("mysql", dbURI)
