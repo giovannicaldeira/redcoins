@@ -5,12 +5,12 @@ services:
     image: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: 'redcoinsdb'
-      MYSQL_USER: 'redcoins'
-      MYSQL_PASSWORD: 'redcoins'
-      MYSQL_ROOT_PASSWORD: 'p@ssw0rd!'
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT}
     ports:
-      - '3306:3306'
+      - '${DB_PORT}:${DB_PORT}'
     networks: 
       - redcoins-network
 
@@ -18,7 +18,7 @@ services:
     build: .
     command: sh -c "/app/redcoins"
     ports:
-      - "8080:8080"
+      - "${PORT}:${PORT}"
     depends_on: 
       - db
     networks: 

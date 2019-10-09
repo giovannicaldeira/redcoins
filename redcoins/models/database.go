@@ -7,6 +7,7 @@ import (
 
 	"fmt"
 	"os"
+	"time"
 )
 
 var db *gorm.DB
@@ -28,8 +29,13 @@ func init() {
 	fmt.Println(dbURI)
 
 	conn, err := gorm.Open("mysql", dbURI)
-	if err != nil {
-		fmt.Print(err)
+	for {
+		if err != nil {
+			conn, err = gorm.Open("mysql", dbURI)
+			time.Sleep(1000 * time.Millisecond)
+		} else {
+			break
+		}
 	}
 
 	db = conn
